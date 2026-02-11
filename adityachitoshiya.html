@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="description" content="Aditya Chitoshiya - Founder, Varahalabs.studio | Design Engineer & Creative Technologist.">
+    <title>Aditya Chitoshiya | Founder & Design Engineer</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'%3E%3C/path%3E%3C/svg%3E">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary: #3b82f6;
+            --accent: #a855f7;
+            --dark: #050505;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--dark);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        body.loading { overflow: hidden; }
+
+        h1, h2, h3, .display-font { font-family: 'Syne', sans-serif; }
+
+        /* Cinematic Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+
+        /* --- CUSTOM CURSOR STYLES --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none; display: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: white; mix-blend-mode: difference; }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.5); transition: width 0.2s, height 0.2s, background-color 0.2s; mix-blend-mode: difference; }
+        
+        @media (hover: hover) and (pointer: fine) {
+            body { cursor: none; }
+            .cursor-dot, .cursor-outline { display: block; }
+        }
+        body.hovering .cursor-outline { width: 80px; height: 80px; background-color: rgba(255, 255, 255, 0.1); border-color: transparent; backdrop-filter: invert(1); }
+
+        /* Glass Panels */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .glass-panel:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Project Card */
+        .project-card { position: relative; overflow: hidden; border-radius: 1.5rem; }
+        .project-card img { transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        .project-card:hover img { transform: scale(1.1); }
+        .project-card .overlay {
+            background: linear-gradient(to top, #000000cc, transparent);
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .project-card:hover .overlay { opacity: 1; }
+
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* Preloader */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+        #preloader.hidden { opacity: 0; visibility: hidden; }
+
+        /* --- GLITCH EFFECT ON HOVER --- */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch-text {
+            position: relative;
+            color: white;
+            mix-blend-mode: lighten;
+        }
+        .glitch-wrapper:hover .glitch-text::before,
+        .glitch-wrapper:hover .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505;
+        }
+        .glitch-wrapper:hover .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            clip-path: inset(44% 0 61% 0);
+            animation: glitch-anim-1 0.4s infinite linear alternate-reverse;
+        }
+        .glitch-wrapper:hover .glitch-text::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9;
+            clip-path: inset(58% 0 43% 0);
+            animation: glitch-anim-2 0.4s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim-1 {
+            0% { clip-path: inset(20% 0 80% 0); }
+            20% { clip-path: inset(60% 0 10% 0); }
+            40% { clip-path: inset(40% 0 50% 0); }
+            60% { clip-path: inset(80% 0 5% 0); }
+            80% { clip-path: inset(10% 0 70% 0); }
+            100% { clip-path: inset(30% 0 20% 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip-path: inset(10% 0 60% 0); }
+            20% { clip-path: inset(80% 0 5% 0); }
+            40% { clip-path: inset(30% 0 20% 0); }
+            60% { clip-path: inset(15% 0 80% 0); }
+            80% { clip-path: inset(55% 0 10% 0); }
+            100% { clip-path: inset(40% 0 30% 0); }
+        }
+
+        /* Form Autofill Fix */
+        input:-webkit-autofill, textarea:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px #111827 inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+</head>
+<body class="loading">
+    
+    <!-- VIDEO PRELOADER -->
+    <div id="preloader">
+        <div class="relative w-full h-full overflow-hidden">
+            <!-- Sci-Fi Video Background -->
+            <video autoplay muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-60">
+                <!-- Using a tech/abstract video placeholder -->
+                <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4">
+            </video>
+            
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-20 bg-black/40 backdrop-blur-sm">
+                <i data-lucide="hexagon" class="w-20 h-20 text-blue-500 animate-spin-slow mb-6 fill-blue-500/10"></i>
+                <h2 class="text-4xl font-black text-white tracking-[0.5em] display-font animate-pulse mb-2">ADITYA</h2>
+                <p class="text-blue-400 font-mono text-xs uppercase tracking-widest">System Initializing...</p>
+                
+                <div class="mt-8 w-64 h-1 bg-gray-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 animate-[width_3s_ease-in-out_forwards]" style="width: 0%; animation-fill-mode: forwards;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="noise-overlay"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 top-0 left-0 px-4 md:px-6 py-4 md:py-6 mix-blend-difference text-white bg-black/50 backdrop-blur-sm border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="index.html" class="text-lg md:text-xl font-bold tracking-widest display-font hover-trigger flex items-center gap-2 cursor-none">
+                <i data-lucide="arrow-left" class="w-4 h-4 text-blue-500"></i> ADITYA<span class="text-blue-500">.</span>CC
+            </a>
+            
+            <div class="hidden md:flex gap-8 text-xs font-medium tracking-wider uppercase">
+                <a href="#about" class="hover-trigger opacity-70 hover:opacity-100 transition-opacity hover:text-blue-400 cursor-none">Profile</a>
+                <a href="#experience" class="hover:text-blue-400 transition-colors hover-trigger cursor-none">Experience</a>
+                <a href="#skills" class="hover-trigger opacity-70 hover:opacity-100 transition-opacity hover:text-blue-400 cursor-none">Stack</a>
+                <a href="#certifications" class="hover-trigger opacity-70 hover:opacity-100 transition-opacity hover:text-blue-400 cursor-none">Credentials</a>
+            </div>
+
+            <a href="mailto:adityachitoshiya12@gmail.com" class="px-4 py-2 border border-white/20 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors hover-trigger bg-white/5 backdrop-blur-md cursor-none">
+                Let's Talk
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Mobile Optimized) -->
+    <section class="relative min-h-[100dvh] flex flex-col justify-center items-center text-center px-6 overflow-hidden">
+        <!-- 3D Background -->
+        <div id="webgl-container" class="absolute inset-0 z-0 opacity-40"></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto mt-16 md:mt-0 w-full">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 backdrop-blur-md mb-6 md:mb-8 hover-trigger reveal cursor-none">
+                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
+                <span class="text-[10px] md:text-xs font-mono text-blue-300 uppercase tracking-wider">Founder @ Varaha Labs</span>
+            </div>
+
+            <h1 class="display-font text-4xl xs:text-5xl sm:text-7xl md:text-9xl font-black leading-[1] mb-6 md:mb-8 reveal mix-blend-overlay">
+                DESIGN <br> 
+                <!-- GLITCH EFFECT WRAPPER -->
+                <span class="glitch-wrapper">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600 glitch-text" data-text="ENGINEER">ENGINEER</span>
+                </span>
+            </h1>
+            
+            <p class="text-base sm:text-lg md:text-2xl text-gray-400 font-light max-w-3xl mx-auto mb-8 md:mb-12 reveal leading-relaxed">
+                Turning ideas into powerful digital experiences. <br class="hidden md:block">
+                <span class="text-blue-400">Motion</span> • <span class="text-purple-400">CGI</span> • <span class="text-pink-400">AI Systems</span> • <span class="text-white">Brand Strategy</span>
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center reveal w-full px-4 md:px-8">
+                <a href="#experience" class="group relative px-6 py-4 bg-white text-black rounded-full font-bold overflow-hidden hover-trigger w-full sm:w-auto text-sm md:text-base cursor-none shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                    <span class="relative z-10 flex items-center justify-center gap-2">View Journey <i data-lucide="arrow-down-right" class="w-4 h-4"></i></span>
+                    <div class="absolute inset-0 bg-blue-500 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </a>
+                <a href="#skills" class="px-6 py-4 border border-white/20 rounded-full font-bold hover:bg-white/10 transition-colors hover-trigger w-full sm:w-auto text-white text-sm md:text-base cursor-none">
+                    View Arsenal
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision / Manifesto -->
+    <section id="about" class="py-24 bg-[#080808] relative overflow-hidden">
+        <div class="absolute right-0 top-1/4 w-[500px] h-[500px] bg-blue-900/10 rounded-full blur-[150px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h2 class="display-font text-4xl md:text-6xl font-bold mb-8 text-white">THE <span class="text-purple-500">VISION</span></h2>
+                    <p class="text-gray-400 text-lg mb-6 leading-relaxed">
+                        To build a <strong class="text-white">future-ready studio</strong> where designers, developers, motion artists, and AI systems collaborate to create world-class digital experiences.
+                    </p>
+                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                        I combine <span class="text-white">Design + Technology + AI</span> into one integrated skillset. From creating viral campaigns for brands like Regrip to building educational content for Singapore's Biedx.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-3">
+                        <span class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm text-gray-300 flex items-center gap-2"><i data-lucide="video" class="w-4 h-4 text-blue-400"></i> Motion Storytelling</span>
+                        <span class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm text-gray-300 flex items-center gap-2"><i data-lucide="layout" class="w-4 h-4 text-purple-400"></i> UI/UX Design</span>
+                        <span class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-sm text-gray-300 flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4 text-green-400"></i> Python & AI</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 reveal">
+                    <div class="glass-panel p-8 rounded-2xl space-y-4 hover-trigger cursor-none">
+                        <h3 class="text-4xl font-black text-white">50+</h3>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">Projects Delivered</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-2xl space-y-4 hover-trigger translate-y-8 bg-blue-900/10 border-blue-500/20 cursor-none">
+                        <h3 class="text-4xl font-black text-blue-400">3+</h3>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">Years Experience</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-2xl space-y-4 hover-trigger cursor-none">
+                        <h3 class="text-4xl font-black text-purple-400">10M+</h3>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">Views Generated</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-2xl space-y-4 hover-trigger translate-y-8 cursor-none">
+                        <h3 class="text-4xl font-black text-green-400">AI</h3>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">Driven Workflows</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Timeline -->
+    <section id="experience" class="py-32 bg-[#050505] border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="display-font text-4xl md:text-6xl font-bold text-white mb-4">CAREER <span class="text-blue-500">TIMELINE</span></h2>
+                <p class="text-gray-500">My professional journey across brands and borders.</p>
+            </div>
+
+            <div class="relative border-l border-gray-800 ml-4 md:ml-1/2 space-y-16">
+                
+                <!-- Role 1 -->
+                <div class="relative pl-12 md:pl-0 group reveal">
+                    <div class="absolute left-[-6px] md:left-1/2 md:-ml-[6px] top-0 w-3 h-3 bg-blue-500 rounded-full ring-4 ring-black shadow-[0_0_15px_#3b82f6]"></div>
+                    <div class="md:flex items-center justify-between w-full">
+                        <div class="md:w-[45%] md:text-right pr-12 order-1">
+                            <div class="inline-block px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold mb-2 border border-blue-500/30">Jun 2025 - Present</div>
+                            <h3 class="text-2xl font-bold text-white">Founder</h3>
+                            <h4 class="text-lg text-gray-400 font-mono mb-3">Varahalabs (Gurugram)</h4>
+                            <p class="text-gray-500 text-sm leading-relaxed">Building a future-ready studio. Integrating design, code, and AI to create next-gen digital experiences for brands.</p>
+                        </div>
+                        <div class="md:w-[45%] pl-12 order-2 hidden md:block"></div>
+                    </div>
+                </div>
+
+                <!-- Role 2 -->
+                <div class="relative pl-12 md:pl-0 group reveal">
+                    <div class="absolute left-[-6px] md:left-1/2 md:-ml-[6px] top-0 w-3 h-3 bg-purple-500 rounded-full ring-4 ring-black"></div>
+                    <div class="md:flex items-center justify-between w-full">
+                        <div class="md:w-[45%] md:text-right pr-12 order-1 hidden md:block"></div>
+                        <div class="md:w-[45%] md:pl-12 order-2">
+                            <div class="inline-block px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold mb-2 border border-purple-500/30">Sep 2025 - Present</div>
+                            <h3 class="text-2xl font-bold text-white">Motion Graphic Designer</h3>
+                            <h4 class="text-lg text-gray-400 font-mono mb-3">Regrip (Tyre Brand)</h4>
+                            <p class="text-gray-500 text-sm leading-relaxed">Leading brand transformation. Creating founder stories, influencer campaigns, and TED-style videos. Working with Suniel Shetty's team.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Role 3 -->
+                <div class="relative pl-12 md:pl-0 group reveal">
+                    <div class="absolute left-[-6px] md:left-1/2 md:-ml-[6px] top-0 w-3 h-3 bg-pink-500 rounded-full ring-4 ring-black"></div>
+                    <div class="md:flex items-center justify-between w-full">
+                        <div class="md:w-[45%] md:text-right pr-12 order-1">
+                            <div class="inline-block px-3 py-1 rounded-full bg-pink-500/20 text-pink-400 text-xs font-bold mb-2 border border-pink-500/30">Aug 2025 - Nov 2025</div>
+                            <h3 class="text-2xl font-bold text-white">Visual Education Specialist</h3>
+                            <h4 class="text-lg text-gray-400 font-mono mb-3">Biedx (Singapore)</h4>
+                            <p class="text-gray-500 text-sm leading-relaxed">Radiology & Surgery Education. Improved course content with vision-oriented storytelling and event documentation.</p>
+                        </div>
+                        <div class="md:w-[45%] pl-12 order-2 hidden md:block"></div>
+                    </div>
+                </div>
+
+                <!-- Role 4 -->
+                <div class="relative pl-12 md:pl-0 group reveal">
+                    <div class="absolute left-[-6px] md:left-1/2 md:-ml-[6px] top-0 w-3 h-3 bg-green-500 rounded-full ring-4 ring-black"></div>
+                    <div class="md:flex items-center justify-between w-full">
+                        <div class="md:w-[45%] md:text-right pr-12 order-1 hidden md:block"></div>
+                        <div class="md:w-[45%] md:pl-12 order-2">
+                            <div class="inline-block px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold mb-2 border border-green-500/30">May 2022 - Jun 2025</div>
+                            <h3 class="text-2xl font-bold text-white">Motion & Graphic Designer</h3>
+                            <h4 class="text-lg text-gray-400 font-mono mb-3">Mittsure (Jaipur)</h4>
+                            <p class="text-gray-500 text-sm leading-relaxed">Designed international book covers, magazines, and educational product visuals. Elevated brand identity to a premium level.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Stack & Credentials -->
+    <section id="skills" class="py-24 bg-[#080808] border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                
+                <!-- Tech Stack -->
+                <div class="reveal">
+                    <h3 class="text-2xl font-bold text-white mb-8 flex items-center gap-2"><i data-lucide="layers" class="text-blue-500"></i> The Arsenal</h3>
+                    <div class="space-y-6">
+                        <!-- Design -->
+                        <div class="glass-panel p-6 rounded-xl hover-trigger cursor-none">
+                            <h4 class="text-sm text-gray-400 uppercase tracking-widest mb-4">Design & Motion</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">After Effects</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">Premiere Pro</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">2D Animation</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">Photoshop</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">Illustrator</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">Figma</span>
+                            </div>
+                        </div>
+                        <!-- Tech -->
+                        <div class="glass-panel p-6 rounded-xl hover-trigger cursor-none">
+                            <h4 class="text-sm text-gray-400 uppercase tracking-widest mb-4">Tech & AI</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">Python</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">AI Agents</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">HTML5/CSS3</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">React</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">TensorFlow</span>
+                                <span class="px-3 py-1 bg-white/5 rounded-full text-xs text-gray-300 border border-white/10">Pandas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education & Certs -->
+                <div id="certifications" class="reveal">
+                    <h3 class="text-2xl font-bold text-white mb-8 flex items-center gap-2"><i data-lucide="award" class="text-purple-500"></i> Credentials</h3>
+                    
+                    <div class="glass-panel p-6 rounded-xl mb-6 border-l-4 border-purple-500 hover-trigger cursor-none">
+                        <h4 class="text-lg font-bold text-white">B.Tech Computer Science</h4>
+                        <p class="text-sm text-purple-400 mb-1">Anand International College of Engineering</p>
+                        <p class="text-xs text-gray-500">2018 - 2022 • Jaipur</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors hover-trigger cursor-none">
+                            <div class="p-2 bg-green-500/10 rounded text-green-400"><i data-lucide="shield-check" class="w-4 h-4"></i></div>
+                            <div><h5 class="text-sm font-bold text-gray-200">Red Team Hacking & Pentesting</h5></div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors hover-trigger cursor-none">
+                            <div class="p-2 bg-blue-500/10 rounded text-blue-400"><i data-lucide="scan-face" class="w-4 h-4"></i></div>
+                            <div><h5 class="text-sm font-bold text-gray-200">Face Recognition App (Python)</h5></div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors hover-trigger cursor-none">
+                            <div class="p-2 bg-orange-500/10 rounded text-orange-400"><i data-lucide="cloud" class="w-4 h-4"></i></div>
+                            <div><h5 class="text-sm font-bold text-gray-200">Cloud Computing 101</h5></div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors hover-trigger cursor-none">
+                            <div class="p-2 bg-pink-500/10 rounded text-pink-400"><i data-lucide="trending-up" class="w-4 h-4"></i></div>
+                            <div><h5 class="text-sm font-bold text-gray-200">Fundamentals of Digital Marketing</h5></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+                        <i data-lucide="hexagon" class="text-blue-500 w-6 h-6"></i>
+                        <span class="brand-font text-2xl font-bold text-white">VARAHA<span class="text-blue-500">LABS</span></span>
+                    </div>
+                    <p class="text-gray-500 text-sm">Aditya Chitoshiya • Founder & Design Engineer</p>
+                    <p class="text-gray-600 text-xs mt-1">India</p>
+                </div>
+                
+                <div class="flex gap-6">
+                    <a href="https://linkedin.com/in/imadityakumar" class="p-3 bg-white/5 rounded-full hover:bg-blue-600/20 hover:text-blue-500 transition-all hover-trigger cursor-none"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                    <a href="https://behance.net/adityachitosh" class="p-3 bg-white/5 rounded-full hover:bg-blue-600/20 hover:text-blue-500 transition-all hover-trigger cursor-none"><i data-lucide="palette" class="w-5 h-5"></i></a>
+                    <a href="mailto:adityachitoshiya12@gmail.com" class="p-3 bg-white/5 rounded-full hover:bg-blue-600/20 hover:text-blue-500 transition-all hover-trigger cursor-none"><i data-lucide="mail" class="w-5 h-5"></i></a>
+                    <a href="tel:+917727088810" class="p-3 bg-white/5 rounded-full hover:bg-blue-600/20 hover:text-blue-500 transition-all hover-trigger cursor-none"><i data-lucide="phone" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+                document.body.classList.remove('loading');
+            }, 3000); // 3 second video play time
+        });
+
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        if (window.matchMedia("(hover: hover)").matches) {
+            window.addEventListener('mousemove', (e) => {
+                const posX = e.clientX;
+                const posY = e.clientY;
+                cursorDot.style.left = `${posX}px`;
+                cursorDot.style.top = `${posY}px`;
+                cursorOutline.animate({
+                    left: `${posX}px`,
+                    top: `${posY}px`
+                }, { duration: 500, fill: "forwards" });
+            });
+
+            document.querySelectorAll('.hover-trigger').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+            });
+        }
+
+        // Reveal Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 3D Wave
+        const canvas = document.getElementById('webgl-container');
+        if(canvas) {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            canvas.appendChild(renderer.domElement);
+
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 1000;
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for(let i = 0; i < particlesCount * 3; i++) {
+                posArray[i] = (Math.random() - 0.5) * 15; 
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.015,
+                color: 0x3b82f6, // Varaha Blue
+                transparent: true,
+                opacity: 0.6,
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            camera.position.z = 5;
+
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            if (window.matchMedia("(hover: hover)").matches) {
+                document.addEventListener('mousemove', (event) => {
+                    mouseX = event.clientX / window.innerWidth - 0.5;
+                    mouseY = event.clientY / window.innerHeight - 0.5;
+                });
+            }
+
+            const animate = function () {
+                requestAnimationFrame(animate);
+                particlesMesh.rotation.y += 0.001 + (mouseX * 0.05);
+                particlesMesh.rotation.x += 0.001 + (mouseY * 0.05);
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+    </script>
+</body>
+</html>

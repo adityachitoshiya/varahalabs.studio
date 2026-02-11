@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+
+    <!-- Primary Meta Tags -->
+    <title>Varaha Labs Studio | Future Ready Digital Solutions - Web Development, Design & Marketing</title>
+    <meta name="title" content="Varaha Labs Studio | Future Ready Digital Solutions">
+    <meta name="description"
+        content="Varaha Labs Studio delivers cutting-edge software development, web design, motion graphics, VFX, and viral marketing solutions. Building brands globally with innovative digital services.">
+    <meta name="keywords"
+        content="web development, app development, graphic design, motion graphics, video editing, VFX, CGI, brand promotion, digital marketing, software development, Varaha Labs, full stack development">
+    <meta name="author" content="Varaha Labs Studio">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="theme-color" content="#3b82f6">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://varahalabs.studio/">
+    <meta property="og:title" content="Varaha Labs Studio | Future Ready Digital Solutions">
+    <meta property="og:description"
+        content="Building the impossible. Expert software development, web design, motion graphics, VFX, and viral marketing solutions for brands worldwide.">
+    <meta property="og:image"
+        content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%23050505'/%3E%3Ctext x='600' y='280' font-family='Arial' font-size='72' font-weight='bold' fill='white' text-anchor='middle'%3EVARAHA%3C/text%3E%3Ctext x='600' y='360' font-family='Arial' font-size='72' font-weight='bold' fill='%233b82f6' text-anchor='middle'%3ELABS%3C/text%3E%3Ctext x='600' y='420' font-family='Arial' font-size='24' fill='%23e2e8f0' text-anchor='middle'%3EFuture Ready Digital Solutions%3C/text%3E%3C/svg%3E">
+    <meta property="og:site_name" content="Varaha Labs Studio">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://varahalabs.studio/">
+    <meta property="twitter:title" content="Varaha Labs Studio | Future Ready Digital Solutions">
+    <meta property="twitter:description"
+        content="Building the impossible. Expert software development, web design, motion graphics, VFX, and viral marketing solutions for brands worldwide.">
+    <meta property="twitter:image"
+        content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='630' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%23050505'/%3E%3Ctext x='600' y='280' font-family='Arial' font-size='72' font-weight='bold' fill='white' text-anchor='middle'%3EVARAHA%3C/text%3E%3Ctext x='600' y='360' font-family='Arial' font-size='72' font-weight='bold' fill='%233b82f6' text-anchor='middle'%3ELABS%3C/text%3E%3Ctext x='600' y='420' font-family='Arial' font-size='24' fill='%23e2e8f0' text-anchor='middle'%3EFuture Ready Digital Solutions%3C/text%3E%3C/svg%3E">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://varahalabs.studio/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'%3E%3C/path%3E%3C/svg%3E">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Varaha Labs Studio",
+      "alternateName": "VarahaLabs",
+      "url": "https://varahalabs.studio",
+      "logo": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'%3E%3C/path%3E%3C/svg%3E",
+      "description": "Varaha Labs Studio delivers cutting-edge software development, web design, motion graphics, VFX, and viral marketing solutions for brands worldwide.",
+      "foundingDate": "2024",
+      "serviceArea": {
+        "@type": "Place",
+        "name": "Worldwide"
+      },
+      "areaServed": "Worldwide",
+      "knowsAbout": ["Web Development", "App Development", "Graphic Design", "Motion Graphics", "Video Editing", "VFX", "CGI", "Digital Marketing", "Brand Promotion"],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "availableLanguage": "English"
+      },
+      "sameAs": [
+        "https://instagram.com/varahalabs",
+        "https://twitter.com/varahalabs",
+        "https://linkedin.com/company/varahalabs"
+      ]
+    }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #050505;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* --- FORM AUTOFILL FIX --- */
+        input:-webkit-autofill,
+        textarea:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px #111827 inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+
+        /* --- CUSTOM CURSOR STYLES (FIXED) --- */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 10001;
+            /* Higher than preloader */
+            pointer-events: none;
+            display: none;
+            /* Hidden by default on mobile */
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        /* Force show on desktop */
+        @media (hover: hover) and (pointer: fine) {
+            body {
+                cursor: none;
+            }
+
+            .cursor-dot,
+            .cursor-outline {
+                display: block !important;
+            }
+        }
+
+        body.hovering .cursor-outline {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: transparent;
+            backdrop-filter: invert(1);
+        }
+
+        /* Animations & Utilities */
+        @keyframes float {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+
+        .animate-float {
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .glass-card:hover {
+                transform: translateY(-10px);
+                background: rgba(255, 255, 255, 0.08);
+                border-color: rgba(59, 130, 246, 0.5);
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+            }
+        }
+
+        .bg-grid {
+            background-size: 30px 30px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        .phone-mockup {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+            transition: transform 0.1s linear;
+        }
+
+        .post-grid-item {
+            opacity: 0.3;
+            transform: scale(0.9);
+            transition: all 0.5s ease;
+        }
+
+        .post-grid-item.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .process-node {
+            transition: all 0.5s ease;
+            background: #1a1a1a;
+            border: 2px solid #333;
+        }
+
+        .process-node.active {
+            background: #3b82f6;
+            border-color: #60a5fa;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+        }
+
+        .tech-icon {
+            transition: transform 0.1s linear;
+            position: absolute;
+            will-change: transform;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .holo-card {
+            background: rgba(10, 20, 40, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .holo-scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 50%, rgba(59, 130, 246, 0.05) 51%, transparent 52%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --- BRAND SCROLL ANIMATION --- */
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .animate-scroll {
+            animation: scroll 30s linear infinite;
+        }
+
+        .animate-scroll:hover {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- CUSTOM CURSOR ELEMENTS -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-black/90 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <div class="flex-shrink-0 flex items-center gap-2">
+                    <i data-lucide="hexagon"
+                        class="text-blue-500 w-6 h-6 md:w-8 md:h-8 fill-blue-500/20 animate-pulse"></i>
+                    <span class="brand-font text-xl md:text-2xl font-bold text-white tracking-wider">VARAHA<span
+                            class="text-blue-500">LABS</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home"
+                            class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm lg:text-lg font-medium">Home</a>
+                        <a href="#services"
+                            class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm lg:text-lg font-medium">Services</a>
+                        <a href="#nexus-ai"
+                            class="hover:text-purple-400 transition-colors px-3 py-2 rounded-md text-sm lg:text-lg font-medium flex items-center gap-1"><i
+                                data-lucide="sparkles" class="w-4 h-4"></i>AI</a>
+                        <a href="#process"
+                            class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm lg:text-lg font-medium">Process</a>
+                        <a href="#viral-growth"
+                            class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm lg:text-lg font-medium">Growth</a>
+                        <a href="#work-vault"
+                            class="hover:text-blue-400 transition-colors px-3 py-2 rounded-md text-sm lg:text-lg font-medium">Vault</a>
+                        <a href="contact.html"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm lg:text-lg font-medium">Contact</a>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white p-2 focus:outline-none">
+                        <i data-lucide="menu" class="w-7 h-7"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-black border-b border-white/10 absolute w-full shadow-2xl transition-all duration-300 ease-in-out">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home"
+                    class="mobile-link block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-white/5 hover:text-blue-400">Home</a>
+                <a href="#services"
+                    class="mobile-link block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-white/5 hover:text-blue-400">Services</a>
+                <a href="#nexus-ai"
+                    class="mobile-link block px-3 py-3 rounded-lg text-base font-medium text-purple-400 hover:bg-white/5 hover:text-purple-300 flex items-center gap-2"><i
+                        data-lucide="sparkles" class="w-4 h-4"></i>Nexus AI</a>
+                <a href="#process"
+                    class="mobile-link block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-white/5 hover:text-blue-400">Process</a>
+                <a href="#viral-growth"
+                    class="mobile-link block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-white/5 hover:text-blue-400">Growth</a>
+                <a href="#work-vault"
+                    class="mobile-link block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-white/5 hover:text-blue-400">Vault</a>
+                <a href="contact.html"
+                    class="mobile-link block px-3 py-3 rounded-lg text-base font-medium text-gray-300 hover:bg-white/5 hover:text-blue-400">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Rest of your HTML content here - I'll continue in the next part due to length -->
+    <!-- Hero Section -->
+    <section id="home"
+        class="relative min-h-screen flex items-center justify-center pt-16 md:pt-20 overflow-hidden bg-grid">
+        <div
+            class="absolute top-1/4 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-blue-600/20 rounded-full blur-[60px] md:blur-[120px] animate-float">
+        </div>
+        <div
+            class="absolute bottom-1/4 right-1/4 w-48 h-48 md:w-96 md:h-96 bg-purple-600/20 rounded-full blur-[60px] md:blur-[120px] animate-float-delayed">
+        </div>
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="inline-block mb-4 px-4 py-1 md:px-6 md:py-2 rounded-full border border-green-500/50 bg-green-500/10 text-green-400 text-[10px] md:text-sm tracking-[0.2em] uppercase font-bold fade-in-up backdrop-blur-md">
+                Now Live</div>
+            <h1 class="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-4 md:mb-6 leading-tight fade-in-up"
+                style="animation-delay: 0.2s;">
+                BUILDING THE <br><span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-purple-500 animate-gradient glow-text">IMPOSSIBLE</span>
+            </h1>
+            <p class="text-sm sm:text-lg md:text-2xl text-gray-400 mb-8 md:mb-10 max-w-3xl mx-auto fade-in-up leading-relaxed px-4"
+                style="animation-delay: 0.3s;">We are working with <span class="text-white font-bold">multiple brands
+                    and companies</span> worldwide, delivering extraordinary digital solutions.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center fade-in-up w-full sm:w-auto px-4"
+                style="animation-delay: 0.4s;">
+                <a href="#services"
+                    class="w-full sm:w-auto px-8 py-3 md:py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white rounded-full font-bold text-base md:text-lg transition-all hover:scale-105 flex justify-center items-center gap-2 shadow-lg shadow-blue-900/20">Preview
+                    Services <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+                <a href="#nexus-ai"
+                    class="w-full sm:w-auto px-8 py-3 md:py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-full font-bold text-base md:text-lg transition-all hover:scale-105 flex justify-center items-center gap-2 shadow-lg shadow-purple-900/20">Try
+                    Nexus AI ✨</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Continue with all other sections... I'll add them in the completion -->
+
+    <script>
+        // All your JavaScript code here
+        lucide.createIcons();
+        // ... rest of the scripts
+    </script>
+</body>
+
+</html>
